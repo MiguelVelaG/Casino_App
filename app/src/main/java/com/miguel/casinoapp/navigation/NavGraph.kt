@@ -8,6 +8,8 @@ import androidx.navigation.compose.composable
 import com.miguel.casinoapp.ui.theme.DiceGameScreen
 import com.miguel.casinoapp.viewmodel.DiceRollerViewModel
 import com.miguel.casinoapp.ui.theme.MainMenuScreen
+import com.miguel.casinoapp.ui.theme.RouletteGameScreen
+import com.miguel.casinoapp.viewmodel.RouletteViewModel
 
 
 @Composable
@@ -23,6 +25,11 @@ fun NavGraph(navController: NavHostController) {
             val diceRollerViewModel: DiceRollerViewModel = viewModel() // Creación del ViewModel
             // Se pasa el ViewModel y el NavController a la pantalla correspondiente
             DiceGameScreen(viewModel = diceRollerViewModel, navController = navController)
+        }
+        composable("roulette") {
+            // Se obtiene el ViewModel del juego de ruleta
+            val rouletteViewModel: RouletteViewModel = viewModel()
+            RouletteGameScreen(viewModel = rouletteViewModel, navController = navController)
         }
     }
 }
