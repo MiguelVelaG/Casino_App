@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Casino App</string>
+    <string name="app_name">Casino</string>
+    <string name="roll">Lanzar dado</string>
 </resources>
