@@ -86,6 +86,34 @@ fun MainMenuScreen(navController: NavHostController) {
                 buttonColor = Color(0xFF388E3C), // Verde para el botón
                 iconColor = Color.White
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Botón de "Ruleta"
+            CustomButton(
+                text = "Ruleta",
+                onClick = {
+                    Log.d("MainMenuScreen", "Navegando a la ruleta...") // Log justo antes de la navegación
+                    navController.navigate("roulette")
+                },
+                iconRes = R.drawable.ic_roulette,
+                buttonColor = Color(0xFFD32F2F), // Rojo para el botón de ruleta
+                iconColor = Color.White
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Botón de "Blackjack"
+            CustomButton(
+                text = "Blackjack",
+                onClick = {
+                    Log.d("MainMenuScreen", "Navegando al Blackjack...") // Log justo antes de la navegación
+                    navController.navigate("blackjack")
+                },
+                iconRes = R.drawable.ic_blackjack,
+                buttonColor = Color(0xFFFFA000), // Naranja dorado para blackjack
+                iconColor = Color.White
+            )
         }
     }
 }
