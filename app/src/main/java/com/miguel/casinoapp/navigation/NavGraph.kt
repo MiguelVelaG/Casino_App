@@ -5,10 +5,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.miguel.casinoapp.ui.theme.BlackjackGameScreen
 import com.miguel.casinoapp.ui.theme.DiceGameScreen
 import com.miguel.casinoapp.viewmodel.DiceRollerViewModel
 import com.miguel.casinoapp.ui.theme.MainMenuScreen
 import com.miguel.casinoapp.ui.theme.RouletteGameScreen
+import com.miguel.casinoapp.viewmodel.BlackjackViewModel
 import com.miguel.casinoapp.viewmodel.RouletteViewModel
 
 
@@ -30,6 +32,11 @@ fun NavGraph(navController: NavHostController) {
             // Se obtiene el ViewModel del juego de ruleta
             val rouletteViewModel: RouletteViewModel = viewModel()
             RouletteGameScreen(viewModel = rouletteViewModel, navController = navController)
+        }
+        composable("blackjack") {
+            // Se obtiene el ViewModel del juego de blackjack
+            val blackjackViewModel: BlackjackViewModel = viewModel()
+            BlackjackGameScreen(viewModel = blackjackViewModel, navController = navController)
         }
     }
 }
