@@ -40,21 +40,37 @@ android {
 }
 
 dependencies {
+    // Retrofit para manejar la API
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 
+    // Coil para carga de imágenes en Compose
+    implementation(libs.coil.compose)
+
+    // AndroidX y Jetpack Compose
+    implementation(platform(libs.androidx.compose.bom.v20241201))
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.material3)
+    implementation(libs.ui)
+    implementation(libs.ui.graphics)
+    implementation(libs.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
-    testImplementation(libs.junit)
+    implementation(libs.androidx.animation)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.foundation)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.monitor)
+
+    // Testing
+    testImplementation(libs.junit.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Debugging
+    debugImplementation(libs.ui.test.manifest)
+    debugImplementation(libs.ui.tooling)
 }
