@@ -1,9 +1,9 @@
 package com.miguel.casinoapp.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.miguel.casinoapp.data.Card
-import com.miguel.casinoapp.data.DeckResponse
 import com.miguel.casinoapp.network.RetrofitInstance
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,11 +30,12 @@ class BlackjackViewModel : ViewModel() {
     }
 
     fun resetGame() {
+        Log.d("Blackjack", "Reiniciando juego")
         viewModelScope.launch {
             _state.value = BlackjackState()
             val response = RetrofitInstance.api.shuffleDeck()
             if (response.isSuccessful) {
-                response.body()?.let { deckResponse: DeckResponse ->
+                response.body()?.let { deckResponse ->
                     _state.value = _state.value.copy(deckId = deckResponse.deckId)
                 }
             } else {
@@ -44,35 +45,40 @@ class BlackjackViewModel : ViewModel() {
     }
 
     fun playerHit() {
+        Log.d("Blackjack", "Pedir carta presionado")
         viewModelScope.launch {
             val deckId = _state.value.deckId ?: return@launch
-            drawCards(deckId, 1).firstOrNull()?.also { newCard ->
+            val drawnCards = drawCards(deckId, 1)
+
+            drawnCards.firstOrNull()?.also { newCard ->
                 val newHand = _state.value.playerHand + newCard
                 val newScore = calculateScore(newHand)
+
                 _state.value = _state.value.copy(
                     playerHand = newHand,
                     playerScore = newScore,
                     isPlayerTurn = newScore <= 21,
                     gameResult = if (newScore > 21) "Lose" else _state.value.gameResult
                 )
+                Log.d("Blackjack", "Nueva mano del jugador: $newHand, Puntos: $newScore")
             }
         }
     }
 
     fun playerStand() {
+        Log.d("Blackjack", "El jugador se planta")
         viewModelScope.launch {
             val deckId = _state.value.deckId ?: return@launch
             var newDealerHand = _state.value.dealerHand
             var newDealerScore = calculateScore(newDealerHand)
 
             while (newDealerScore < 17) {
-                drawCards(deckId, 1).firstOrNull()?.let { newCard ->
+                drawCards(deckId, 1).firstOrNull()?.also { newCard ->
                     newDealerHand = newDealerHand + newCard
                     newDealerScore = calculateScore(newDealerHand)
-                    _state.value = _state.value.copy(
-                        dealerHand = newDealerHand,
-                        dealerScore = newDealerScore
-                    )
+
+                    _state.value = _state.value.copy(dealerHand = newDealerHand, dealerScore = newDealerScore)
+
                     delay(1000)
                 } ?: break
             }
@@ -102,6 +108,7 @@ class BlackjackViewModel : ViewModel() {
                 )
             } ?: emptyList()
         } else {
+            _state.value = _state.value.copy(errorMessage = "Error al dibujar las cartas.")
             emptyList()
         }
     }
@@ -113,12 +120,13 @@ class BlackjackViewModel : ViewModel() {
     }
 
     private fun calculateScore(hand: List<Card>): Int {
-        val score = hand.sumOf { parseCardValue(it.value) }
-        val aceCount = hand.count { it.value == "ACE" }
-        return if (score > 21 && aceCount > 0) {
-            score - (10 * aceCount.coerceAtMost((score - 21) / 10))
-        } else {
-            score
+        var score = hand.sumOf { parseCardValue(it.value) }
+        var aceCount = hand.count { it.value == "ACE" }
+
+        while (score > 21 && aceCount > 0) {
+            score -= 10
+            aceCount--
         }
+        return score
     }
 }

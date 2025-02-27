@@ -149,13 +149,21 @@ fun BlackjackWithButtonAndImage(viewModel: BlackjackViewModel, navController: Na
                 ) {
                     Button(
                         onClick = { viewModel.playerHit() },
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+                        enabled = state.gameResult == null, // Solo habilitar si el juego no ha terminado
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF4CAF50), // Verde
+                            contentColor = Color.White
+                        )
                     ) {
                         Text("Pedir carta")
                     }
+
                     Button(
                         onClick = { viewModel.playerStand() },
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFD32F2F), // Rojo
+                            contentColor = Color.White
+                        )
                     ) {
                         Text("Plantarse")
                     }

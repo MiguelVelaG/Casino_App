@@ -49,6 +49,7 @@ dependencies {
     // Retrofit para manejar la API
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor.v4110)
 
     // Coil para carga de imágenes en Compose
     implementation(libs.coil)
