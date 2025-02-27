@@ -43,7 +43,6 @@ Si deseas contribuir:
 **Para el desarrollo inicial de la app**, se utilizó como modelo el Codelab de Jetpack Compose disponible en la documentación oficial de Android, el proyecto base [aquí](https://developer.android.com/codelabs/basic-android-kotlin-compose-build-a-dice-roller-app?hl=es-419#0).
 
 
-## 📜 Últimos commits
 
 ## 📜 Últimos commits
 
