@@ -22,9 +22,7 @@ jobs:
 
       - name: Update README
         run: |
-          # Eliminar la sección de "Últimos commits" existente
           sed -i '/## 📜 Últimos commits/,$d' README.md
-          # Añadir los últimos commits al README
           cat commits.md >> README.md
           rm commits.md
 
@@ -33,10 +31,5 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add README.md
-          # Verificar si hay cambios antes de hacer commit
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Actualizar README con los últimos commits"
-            git push
-          fi
+          git commit -m "Actualizar README con los últimos commits" || exit 0
+          git push
