@@ -107,23 +107,28 @@ fun BlackjackWithButtonAndImage(viewModel: BlackjackViewModel, navController: Na
             // Mano del jugador
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("Jugador", style = MaterialTheme.typography.titleMedium, color = Color.White)
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    state.playerHand.forEach { card ->
-                        ImageCard(card.value, card.suit, card.imageUrl)  // Aquí pasas imageUrl
+
+                if (state.playerHand.isNotEmpty()) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        state.playerHand.forEach { card ->
+                            ImageCard(card.value, card.suit, card.imageUrl)  // Aquí pasas imageUrl
+                        }
                     }
+                } else {
+                    Text("No hay cartas en tu mano", color = Color.White)
                 }
+
                 Text(
                     text = "Tus puntos: ${state.playerScore}",
                     style = MaterialTheme.typography.bodyLarge,
                     color = Color.White
                 )
             }
-
 
 
             // Botones de acción
@@ -167,10 +172,15 @@ fun BlackjackWithButtonAndImage(viewModel: BlackjackViewModel, navController: Na
 
 @Composable
 fun ImageCard(value: String, suit: String, imageUrl: String) {
-    // Usamos Coil para cargar la imagen desde la URL
-    Image(
-        painter = rememberAsyncImagePainter(imageUrl), // Usar Coil para cargar la imagen desde la URL
-        contentDescription = "$value of $suit",
-        modifier = Modifier.size(48.dp)
-    )
+    if (imageUrl.isNotEmpty()) {
+        Image(
+            painter = rememberAsyncImagePainter(imageUrl),
+            contentDescription = "$value of $suit",
+            modifier = Modifier.size(48.dp)
+        )
+    } else {
+        // Aquí puedes manejar el caso cuando imageUrl esté vacío o inválido
+        Text(text = "$value of $suit", color = Color.White) // Muestra el texto como respaldo
+    }
 }
+

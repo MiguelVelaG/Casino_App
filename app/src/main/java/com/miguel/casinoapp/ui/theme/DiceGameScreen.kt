@@ -37,13 +37,16 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.miguel.casinoapp.R
 import com.miguel.casinoapp.R.drawable.ic_home
 import com.miguel.casinoapp.R.raw.dice_roll2
 import com.miguel.casinoapp.viewmodel.DiceRollerViewModel
+import com.miguel.casinoapp.viewmodel.RouletteViewModel
 
 
 @Composable
@@ -439,6 +442,12 @@ fun DiceWithButtonAndImage(viewModel: DiceRollerViewModel, navController: NavHos
 
 }
 
-
+@Preview(showBackground = true)
+@Composable
+fun DiceGameScreen() {
+    val dummyViewModel = RouletteViewModel()
+    val navController = rememberNavController()
+    RouletteGameScreen(viewModel = dummyViewModel, navController = navController)
+}
 
 

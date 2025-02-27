@@ -33,18 +33,12 @@ class BlackjackViewModel : ViewModel() {
             // Generar un nuevo deck usando la API
             val response = RetrofitInstance.api.shuffleDeck()
             if (response.isSuccessful) {
-                response.body()?.let { deckResponse: DeckResponse -> // Especificar el tipo explícitamente
+                response.body()?.let { deckResponse: DeckResponse ->
                     val deckId = deckResponse.deckId
 
-                    // Robar las cartas iniciales dentro de la misma corrutina
-                    val initialPlayerHand = this@BlackjackViewModel.drawCards(
-                        deckId = deckId,
-                        count = 2
-                    )
-                    val initialDealerHand = this@BlackjackViewModel.drawCards(
-                        deckId = deckId,
-                        count = 1
-                    )
+                    // Llamar a drawCards dentro de la corrutina correctamente
+                    val initialPlayerHand = drawCards(deckId, 2) // No es necesario usar this@BlackjackViewModel
+                    val initialDealerHand = drawCards(deckId, 1)
 
                     // Asignar el nuevo estado a la vista después de obtener las cartas
                     _state.value = BlackjackState(
@@ -60,7 +54,6 @@ class BlackjackViewModel : ViewModel() {
             }
         }
     }
-
 
     fun playerHit() {
         if (_state.value.isPlayerTurn) {
@@ -131,15 +124,16 @@ class BlackjackViewModel : ViewModel() {
     private suspend fun drawCards(deckId: String, count: Int): List<Card> {
         val response = RetrofitInstance.api.drawCards(deckId, count)
         return if (response.isSuccessful) {
-            response.body()?.cards?.map {
+            // Verificar la estructura de la respuesta
+            response.body()?.cards?.map { cardResponse ->
+                // Asegurarse de que 'cardResponse' tiene los valores correctos
                 Card(
-                    value = it.value,
-                    suit = it.suit,
-                    imageUrl = it.imageUrl
+                    value = cardResponse.value, // Verifica que 'value' esté aquí
+                    suit = cardResponse.suit,   // Verifica que 'suit' esté aquí
+                    imageUrl = cardResponse.imageUrl // Verifica que 'imageUrl' esté aquí
                 )
             } ?: emptyList()
         } else {
-            // Manejar el error aquí
             println("Error al obtener cartas: ${response.message()}")
             emptyList()
         }

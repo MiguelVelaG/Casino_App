@@ -1,9 +1,10 @@
 [versions]
 agp = "8.8.1"
 animation = "1.7.8"
-coilCompose = "2.4.0"
+coil = "2.2.2"  # O la versión que uses
 composeBomVersion = "2025.02.00"
 converterGson = "2.9.0"
+converterGsonVersion = "2.10.1"
 coreKtxVersion = "1.15.0"
 foundation = "1.7.8"
 kotlin = "2.1.0"
@@ -24,6 +25,7 @@ monitor = "1.7.2"
 junitKtx = "1.2.1"
 
 [libraries]
+coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
 #noinspection SimilarGradleDependency
 androidx-compose-bom-v20241201 = { module = "androidx.compose:compose-bom", version.ref = "composeBomVersion" }
@@ -36,9 +38,9 @@ androidx-core-ktx-v190 = { module = "androidx.core:core-ktx", version.ref = "cor
 androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 #noinspection SimilarGradleDependency
+converter-gson-v2101 = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGsonVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

@@ -37,7 +37,13 @@ android {
     buildFeatures {
         compose = true
     }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
 }
+
 
 dependencies {
     // Retrofit para manejar la API
@@ -45,7 +51,7 @@ dependencies {
     implementation(libs.converter.gson)
 
     // Coil para carga de imágenes en Compose
-    implementation(libs.coil.compose)
+    implementation(libs.coil)
 
     // AndroidX y Jetpack Compose
     implementation(platform(libs.androidx.compose.bom.v20241201))
