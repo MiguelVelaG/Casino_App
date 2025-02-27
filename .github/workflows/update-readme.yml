@@ -1,34 +1,42 @@
 name: Update README with latest commits
 
 on:
+  schedule:
+    - cron: "0 0 * * *"  # Se ejecuta todos los días a medianoche UTC
   push:
     branches:
-      - main
-  schedule:
-    - cron: "0 0 * * *"  # Ejecuta la acción cada día a la medianoche
+      - main  # O la rama principal de tu proyecto
+  workflow_dispatch:  # Permite ejecutar el workflow manualmente desde GitHub
 
 jobs:
   update-readme:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout del repositorio
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Obtener últimos commits
+      - name: Get latest commits
         run: |
-          echo "## 📜 Historial de cambios" > commits.md
-          git log --pretty=format:"- [%h](https://github.com/MiguelVelaG/Casino_App/commit/%H) - %s (%cr)" -n 30 >> commits.md
+          echo "## 📜 Últimos commits" > commits.md
+          git log --pretty=format:"- %h - %s (%cd)" --date=short -n 10 >> commits.md
 
-      - name: Actualizar README.md
+      - name: Update README
         run: |
-          awk '/## 📜 Historial de cambios/{print;print "";system("cat commits.md");next}1' README.md > temp.md
-          mv temp.md README.md
+          # Eliminar la sección de "Últimos commits" existente
+          sed -i '/## 📜 Últimos commits/,$d' README.md
+          # Añadir los últimos commits al README
+          cat commits.md >> README.md
+          rm commits.md
 
-      - name: Subir cambios si hay modificaciones
+      - name: Commit and push changes
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
           git add README.md
-          git diff --quiet && git diff --staged --quiet || git commit -m "Actualizar historial de commits en README"
-          git push
+          # Verificar si hay cambios antes de hacer commit
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Actualizar README con los últimos commits"
+            git push
+          fi
