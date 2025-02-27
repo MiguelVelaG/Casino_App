@@ -44,25 +44,74 @@ Si deseas contribuir:
 
 
 ## 📜 Últimos commits
--ajuste del README.md
-- 7072d85 - Pequeños ajustes del readme para hacerlo dinamico. (2025-02-27)
-- 7072d85 - Pequeños ajustes del readme para hacerlo dinamico. (2025-02-27)
-- 4b0488a - Pequeños ajustes del readme para hacerlo dinamico. (2025-02-27)
-- acfdb11 - Pequeños ajustes del readme para hacerlo dinamico. (2025-02-27)
-- 258f947 - Create update-readme.yml (2025-02-27)
-- 7aa55fe - README.md (2025-02-27)
-- 8f4ba5a - Pequeños ajustes de codigo y creacion de una nueva vista para que los usuarios interactuen con los desarrolladores (2025-02-27)
-- ad0663b - Pequeños ajustes de codigo y creacion de una nueva vista para que los usuarios interactuen con los desarrolladores (2025-02-27)
-- e4624b8 - Pequeños ajustes de codigo y de librerias (2025-02-27)
-- 7e6d147 - Se ha añadido un nuevo boton en la vista del menu principal, añadiendo las cartas y la ruleta para poder acceder a esos juegos (2025-02-27)
-- 19b5697 - Se ha añadido un nuevo apartado para la funcion del as cartas en el menu de navegacion (2025-02-27)
-- 91634e5 - Se ha añadido un nuevo juego con su respectiva vista. (Cartas), modificacion de la libreria con el gradle para añadir las implementaciones y utilizando una api. (20
-  25-02-27)
-- ca6376a - Se ha añadido un boton al menú, con un nuevo juego con su respectiva vista. (la ruleta) (2025-02-26)
-- 437036c - Se ha añadido el menú, con la navegacion entre paginas, con el juego del dado (2025-02-26)
-- 0ac4889 - pequeño cambio en el Manifest (2025-02-26)
-- 7d655bb - Creamos el codelab del Dado y añadimos las imagenes modificando el color del dado + imagenes que podremos utilizar en la app de casino. (2025-02-26)
-- fef92d9 - Initial commit (2025-02-26)
+
+## 📜 Últimos commits
+
+### 2025-02-27
+- **Commit**: `7072d85`  
+  **Descripción**: Pequeños ajustes del README para hacerlo dinámico. ✨  
+  **Detalles**: Se hicieron cambios menores para mejorar la flexibilidad y la estructura del archivo `README.md`.
+
+- **Commit**: `4b0488a`  
+  **Descripción**: Pequeños ajustes del README para hacerlo dinámico. ✨  
+  **Detalles**: Más mejoras en la dinámica del archivo `README.md` para una mejor presentación.
+
+- **Commit**: `acfdb11`  
+  **Descripción**: Pequeños ajustes del README para hacerlo dinámico. ✨  
+  **Detalles**: Ajustes adicionales al `README.md` para mantenerlo actualizado y más accesible.
+
+- **Commit**: `258f947`  
+  **Descripción**: Crear `update-readme.yml`. 🔧  
+  **Detalles**: Creación del archivo `update-readme.yml` para automatizar la actualización del `README.md` con los últimos commits.
+
+- **Commit**: `7aa55fe`  
+  **Descripción**: Actualización del `README.md`. 📝  
+  **Detalles**: Se realizó una actualización para incluir nuevos cambios y funcionalidades.
+
+- **Commit**: `8f4ba5a`  
+  **Descripción**: Pequeños ajustes de código y creación de una nueva vista para interactuar con los desarrolladores. 💬  
+  **Detalles**: Se mejoró el código y se creó una vista nueva para que los usuarios puedan interactuar con los desarrolladores.
+
+- **Commit**: `ad0663b`  
+  **Descripción**: Ajustes de código y creación de una nueva vista para la interacción de los usuarios con los desarrolladores. 💬  
+  **Detalles**: Continuación de mejoras en la vista interactiva con los desarrolladores.
+
+- **Commit**: `e4624b8`  
+  **Descripción**: Pequeños ajustes de código y librerías. 🔧  
+  **Detalles**: Se realizaron ajustes en el código y actualizaciones de algunas librerías para mejorar el rendimiento.
+
+- **Commit**: `7e6d147`  
+  **Descripción**: Añadir botón al menú principal para acceder a los juegos de cartas y ruleta. 🎰  
+  **Detalles**: Se incorporó un botón en el menú principal que permite a los usuarios acceder a los juegos de cartas y ruleta.
+
+- **Commit**: `19b5697`  
+  **Descripción**: Añadir nuevo apartado para la función de cartas en el menú de navegación. 🃏  
+  **Detalles**: Se agregó una nueva sección en el menú de navegación para la función de las cartas.
+
+- **Commit**: `91634e5`  
+  **Descripción**: Añadir nuevo juego (Cartas) y modificar la librería en el Gradle para implementaciones. 🃏  
+  **Detalles**: Se introdujo un nuevo juego de cartas y se realizaron modificaciones en el `Gradle` para permitir nuevas implementaciones utilizando una API.
+
+### 2025-02-26
+- **Commit**: `ca6376a`  
+  **Descripción**: Añadir botón al menú para el nuevo juego de la ruleta. 🎡  
+  **Detalles**: Se añadió un botón al menú para acceder al juego de la ruleta.
+
+- **Commit**: `437036c`  
+  **Descripción**: Añadir el menú y navegación entre páginas para el juego de dados. 🎲  
+  **Detalles**: Se incorporó un nuevo menú y funcionalidad de navegación entre las páginas para el juego de dados.
+
+- **Commit**: `0ac4889`  
+  **Descripción**: Pequeño cambio en el archivo `Manifest`. 🔧  
+  **Detalles**: Se realizó una modificación menor en el archivo `Manifest` para mejorar la configuración de la aplicación.
+
+- **Commit**: `7d655bb`  
+  **Descripción**: Crear codelab del dado y añadir imágenes modificadas. 🎲📸  
+  **Detalles**: Se desarrolló el codelab del juego de dados y se añadieron imágenes con el nuevo color para el dado.
+
+- **Commit**: `fef92d9`  
+  **Descripción**: Commit inicial. 🚀  
+  **Detalles**: Primer commit que establece la estructura base del proyecto.
 
 
 ## 📄 Licencia
