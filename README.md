@@ -44,6 +44,7 @@ Si deseas contribuir:
 
 
 ## 📜 Últimos commits
+-ajuste del README.md
 - 7072d85 - Pequeños ajustes del readme para hacerlo dinamico. (2025-02-27)
 - 7072d85 - Pequeños ajustes del readme para hacerlo dinamico. (2025-02-27)
 - 4b0488a - Pequeños ajustes del readme para hacerlo dinamico. (2025-02-27)
