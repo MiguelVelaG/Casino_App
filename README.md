@@ -44,6 +44,24 @@ Si deseas contribuir:
 
 
 ## 📜 Últimos commits
+- 7072d85 - Pequeños ajustes del readme para hacerlo dinamico. (2025-02-27)
+- 7072d85 - Pequeños ajustes del readme para hacerlo dinamico. (2025-02-27)
+- 4b0488a - Pequeños ajustes del readme para hacerlo dinamico. (2025-02-27)
+- acfdb11 - Pequeños ajustes del readme para hacerlo dinamico. (2025-02-27)
+- 258f947 - Create update-readme.yml (2025-02-27)
+- 7aa55fe - README.md (2025-02-27)
+- 8f4ba5a - Pequeños ajustes de codigo y creacion de una nueva vista para que los usuarios interactuen con los desarrolladores (2025-02-27)
+- ad0663b - Pequeños ajustes de codigo y creacion de una nueva vista para que los usuarios interactuen con los desarrolladores (2025-02-27)
+- e4624b8 - Pequeños ajustes de codigo y de librerias (2025-02-27)
+- 7e6d147 - Se ha añadido un nuevo boton en la vista del menu principal, añadiendo las cartas y la ruleta para poder acceder a esos juegos (2025-02-27)
+- 19b5697 - Se ha añadido un nuevo apartado para la funcion del as cartas en el menu de navegacion (2025-02-27)
+- 91634e5 - Se ha añadido un nuevo juego con su respectiva vista. (Cartas), modificacion de la libreria con el gradle para añadir las implementaciones y utilizando una api. (20
+  25-02-27)
+- ca6376a - Se ha añadido un boton al menú, con un nuevo juego con su respectiva vista. (la ruleta) (2025-02-26)
+- 437036c - Se ha añadido el menú, con la navegacion entre paginas, con el juego del dado (2025-02-26)
+- 0ac4889 - pequeño cambio en el Manifest (2025-02-26)
+- 7d655bb - Creamos el codelab del Dado y añadimos las imagenes modificando el color del dado + imagenes que podremos utilizar en la app de casino. (2025-02-26)
+- fef92d9 - Initial commit (2025-02-26)
 
 
 ## 📄 Licencia
