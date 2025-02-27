@@ -1,6 +1,11 @@
 package com.miguel.casinoapp.ui.theme
 
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,8 +25,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.miguel.casinoapp.R.drawable.ic_home
+import com.miguel.casinoapp.data.Card
 import com.miguel.casinoapp.viewmodel.BlackjackViewModel
 
 @Composable
@@ -172,15 +182,45 @@ fun BlackjackWithButtonAndImage(viewModel: BlackjackViewModel, navController: Na
 
 @Composable
 fun ImageCard(value: String, suit: String, imageUrl: String) {
-    if (imageUrl.isNotEmpty()) {
-        Image(
-            painter = rememberAsyncImagePainter(imageUrl),
-            contentDescription = "$value of $suit",
-            modifier = Modifier.size(48.dp)
-        )
-    } else {
-        // Aquí puedes manejar el caso cuando imageUrl esté vacío o inválido
-        Text(text = "$value of $suit", color = Color.White) // Muestra el texto como respaldo
+    var isVisible by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        isVisible = true
+    }
+
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = fadeIn() + slideInVertically(initialOffsetY = { it / 2 })
+    ) {
+        if (imageUrl.isNotEmpty()) {
+            Image(
+                painter = rememberAsyncImagePainter(imageUrl),
+                contentDescription = "$value of $suit",
+                modifier = Modifier.size(96.dp)
+            )
+        } else {
+            Text(text = "$value of $suit", color = Color.White)
+        }
+    }
+}
+
+@Composable
+fun PlayerHand(cards: List<Card>) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        cards.forEachIndexed { index, card ->
+            AnimatedVisibility(
+                visible = true,
+                enter = fadeIn(animationSpec = tween(500, delayMillis = index * 200)) +
+                        slideInHorizontally(initialOffsetX = { it / 4 })
+            ) {
+                ImageCard(card.value, card.suit, card.imageUrl)
+            }
+        }
     }
 }
 

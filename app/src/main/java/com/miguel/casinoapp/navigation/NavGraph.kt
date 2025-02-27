@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.miguel.casinoapp.ui.theme.BlackjackGameScreen
+import com.miguel.casinoapp.ui.theme.DescriptionScreen
 import com.miguel.casinoapp.ui.theme.DiceGameScreen
 import com.miguel.casinoapp.viewmodel.DiceRollerViewModel
 import com.miguel.casinoapp.ui.theme.MainMenuScreen
@@ -36,6 +37,10 @@ fun NavGraph(navController: NavHostController) {
             // Se obtiene el ViewModel del juego de blackjack
             val blackjackViewModel: BlackjackViewModel = viewModel()
             BlackjackGameScreen(viewModel = blackjackViewModel, navController = navController)
+        }
+        composable("description") {
+            // Aquí se navega a la pantalla de descripción
+            DescriptionScreen(navController = navController)
         }
     }
 }

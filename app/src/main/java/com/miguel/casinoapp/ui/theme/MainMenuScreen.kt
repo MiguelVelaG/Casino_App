@@ -114,6 +114,19 @@ fun MainMenuScreen(navController: NavHostController) {
                 buttonColor = Color(0xFFFFA000), // Naranja dorado para blackjack
                 iconColor = Color.White
             )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Botón para ir a la descripción de la app
+            CustomButton(
+                text = "Descripción de la App",
+                onClick = {
+                    Log.d("MainMenuScreen", "Navegando a la descripción de la app...")
+                    navController.navigate("description")
+                },
+                iconRes = R.drawable.info, // Puedes usar el icono adecuado aquí
+                buttonColor = Color(0xFF3F51B5), // Azul para el botón de descripción
+                iconColor = Color.White
+            )
         }
     }
 }
