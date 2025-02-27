@@ -1,0 +1,34 @@
+name: Update README with latest commits
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 0 * * *"  # Ejecuta la acción cada día a la medianoche
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v3
+
+      - name: Obtener últimos commits
+        run: |
+          echo "## 📜 Historial de cambios" > commits.md
+          git log --pretty=format:"- [%h](https://github.com/MiguelVelaG/Casino_App/commit/%H) - %s (%cr)" -n 30 >> commits.md
+
+      - name: Actualizar README.md
+        run: |
+          awk '/## 📜 Historial de cambios/{print;print "";system("cat commits.md");next}1' README.md > temp.md
+          mv temp.md README.md
+
+      - name: Subir cambios si hay modificaciones
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add README.md
+          git diff --quiet && git diff --staged --quiet || git commit -m "Actualizar historial de commits en README"
+          git push
