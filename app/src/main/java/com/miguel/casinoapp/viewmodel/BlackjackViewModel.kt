@@ -18,8 +18,10 @@ data class BlackjackState(
     val isPlayerTurn: Boolean = true,
     val gameResult: String? = null,
     val deckId: String? = null,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val isGameOver: Boolean = false // Nueva propiedad para saber si el juego terminó
 )
+
 
 class BlackjackViewModel : ViewModel() {
     private val _state = MutableStateFlow(BlackjackState())
@@ -32,13 +34,22 @@ class BlackjackViewModel : ViewModel() {
     fun resetGame() {
         Log.d("Blackjack", "Reiniciando juego")
         viewModelScope.launch {
-            _state.value = BlackjackState()
+            // Asegurarse de que siempre se reinicie el mazo
+            _state.value = BlackjackState() // Reiniciar el estado de juego
+
+            // Realizar la llamada para obtener un nuevo mazo
             val response = RetrofitInstance.api.shuffleDeck()
+
+            Log.d("Blackjack", "Código de respuesta: ${response.code()}")
+            Log.d("Blackjack", "Cuerpo de la respuesta: ${response.body()}")
+
             if (response.isSuccessful) {
                 response.body()?.let { deckResponse ->
+                    Log.d("Blackjack", "Nuevo deckId recibido: ${deckResponse.deckId}, Cartas restantes: ${deckResponse.remaining}")
                     _state.value = _state.value.copy(deckId = deckResponse.deckId)
                 }
             } else {
+                Log.e("Blackjack", "Error al obtener el mazo: ${response.message()}")
                 _state.value = _state.value.copy(errorMessage = "Error al obtener el mazo.")
             }
         }
@@ -47,20 +58,33 @@ class BlackjackViewModel : ViewModel() {
     fun playerHit() {
         Log.d("Blackjack", "Pedir carta presionado")
         viewModelScope.launch {
-            val deckId = _state.value.deckId ?: return@launch
-            val drawnCards = drawCards(deckId, 1)
+            val deckId = _state.value.deckId
+            Log.d("Blackjack", "Deck ID actual antes de robar carta: $deckId")
 
-            drawnCards.firstOrNull()?.also { newCard ->
-                val newHand = _state.value.playerHand + newCard
-                val newScore = calculateScore(newHand)
+            if (deckId == null) {
+                Log.e("Blackjack", "Error: deckId es null")
+                _state.value = _state.value.copy(errorMessage = "El mazo no está disponible.")
+                return@launch
+            }
 
-                _state.value = _state.value.copy(
-                    playerHand = newHand,
-                    playerScore = newScore,
-                    isPlayerTurn = newScore <= 21,
-                    gameResult = if (newScore > 21) "Lose" else _state.value.gameResult
-                )
-                Log.d("Blackjack", "Nueva mano del jugador: $newHand, Puntos: $newScore")
+            try {
+                // Intentamos robar la carta
+                val drawnCards = drawCards(deckId, 1)
+                drawnCards.firstOrNull()?.also { newCard ->
+                    val newHand = _state.value.playerHand + newCard
+                    val newScore = calculateScore(newHand)
+
+                    _state.value = _state.value.copy(
+                        playerHand = newHand,
+                        playerScore = newScore,
+                        isPlayerTurn = newScore <= 21,
+                        gameResult = if (newScore > 21) "Lose" else _state.value.gameResult
+                    )
+                    Log.d("Blackjack", "Nueva mano del jugador: $newHand, Puntos: $newScore")
+                }
+            } catch (e: Exception) {
+                Log.e("Blackjack", "Error al pedir carta: ${e.message}")
+                _state.value = _state.value.copy(errorMessage = "Error al pedir carta.")
             }
         }
     }
@@ -92,23 +116,48 @@ class BlackjackViewModel : ViewModel() {
 
             _state.value = _state.value.copy(
                 isPlayerTurn = false,
-                gameResult = gameResult
+                gameResult = gameResult,
+                isGameOver = true // Establecer que el juego ha terminado
             )
         }
     }
 
     private suspend fun drawCards(deckId: String, count: Int): List<Card> {
-        val response = RetrofitInstance.api.drawCards(deckId, count)
-        return if (response.isSuccessful) {
-            response.body()?.cards?.map { cardResponse ->
-                Card(
-                    value = cardResponse.value,
-                    suit = cardResponse.suit,
-                    imageUrl = cardResponse.imageUrl
-                )
-            } ?: emptyList()
-        } else {
-            _state.value = _state.value.copy(errorMessage = "Error al dibujar las cartas.")
+        Log.d("Blackjack", "Intentando robar $count carta(s) del mazo $deckId")
+
+        return try {
+            val response = RetrofitInstance.api.drawCards(deckId, count)
+
+            Log.d("Blackjack", "Código de respuesta: ${response.code()}")
+            Log.d("Blackjack", "Cuerpo de la respuesta: ${response.body()}")
+
+            if (response.isSuccessful) {
+                val cards = response.body()?.cards ?: emptyList()
+
+                cards.forEach { card ->
+                    Log.d("Blackjack", "Carta obtenida: ${card.value} de ${card.suit}")
+                }
+
+                cards.map { cardResponse ->
+                    Log.d("Blackjack", "URL de la imagen: ${cardResponse.image}")
+
+                    // Si la URL de la imagen es null, se asigna una imagen de error o carta dada vuelta
+                    val imageUrl = cardResponse.image ?: "https://example.com/carta_dada_vuelta.png" // URL de la carta dada vuelta
+
+                    Card(
+                        value = cardResponse.value,
+                        suit = cardResponse.suit,
+                        image = imageUrl
+                    )
+                }
+            } else {
+                Log.e("Blackjack", "Error al robar cartas: ${response.message()}")
+                _state.value = _state.value.copy(errorMessage = "Error al robar cartas.")
+                emptyList()
+            }
+        } catch (e: Exception) {
+            Log.e("Blackjack", "Error de red o al procesar la respuesta: ${e.message}")
+            _state.value = _state.value.copy(errorMessage = "Error al robar cartas.")
             emptyList()
         }
     }

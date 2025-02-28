@@ -38,6 +38,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.miguel.casinoapp.R
 import com.miguel.casinoapp.R.drawable.ic_home
 import com.miguel.casinoapp.data.Card
 import com.miguel.casinoapp.viewmodel.BlackjackViewModel
@@ -104,7 +105,7 @@ fun BlackjackWithButtonAndImage(viewModel: BlackjackViewModel, navController: Na
                     horizontalArrangement = Arrangement.Center
                 ) {
                     state.dealerHand.forEach { card ->
-                        ImageCard(card.value, card.suit, card.imageUrl)  // Aquí pasas imageUrl
+                        ImageCard(card.value, card.suit, card.image)  // Aquí pasas imageUrl
                     }
                 }
                 Text(
@@ -126,7 +127,7 @@ fun BlackjackWithButtonAndImage(viewModel: BlackjackViewModel, navController: Na
                         horizontalArrangement = Arrangement.Center
                     ) {
                         state.playerHand.forEach { card ->
-                            ImageCard(card.value, card.suit, card.imageUrl)  // Aquí pasas imageUrl
+                            ImageCard(card.value, card.suit, card.image)  // Aquí pasas imageUrl
                         }
                     }
                 } else {
@@ -178,7 +179,10 @@ fun BlackjackWithButtonAndImage(viewModel: BlackjackViewModel, navController: Na
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(
                         onClick = { viewModel.resetGame() },
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF1E3A8A), // azul
+                            contentColor = Color.White
+                        )
                     ) {
                         Text("Reiniciar partida")
                     }
@@ -189,7 +193,7 @@ fun BlackjackWithButtonAndImage(viewModel: BlackjackViewModel, navController: Na
 }
 
 @Composable
-fun ImageCard(value: String, suit: String, imageUrl: String) {
+fun ImageCard(value: String, suit: String, imageUrl: String?) {
     var isVisible by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
@@ -200,14 +204,19 @@ fun ImageCard(value: String, suit: String, imageUrl: String) {
         visible = isVisible,
         enter = fadeIn() + slideInVertically(initialOffsetY = { it / 2 })
     ) {
-        if (imageUrl.isNotEmpty()) {
+        if (imageUrl != null && imageUrl.isNotEmpty()) {
             Image(
                 painter = rememberAsyncImagePainter(imageUrl),
                 contentDescription = "$value of $suit",
                 modifier = Modifier.size(96.dp)
             )
         } else {
-            Text(text = "$value of $suit", color = Color.White)
+            // Mostrar imagen de marcador de posición
+            Image(
+                painter = painterResource(id = R.drawable.error), // Reemplaza con tu imagen
+                contentDescription = "$value of $suit",
+                modifier = Modifier.size(96.dp)
+            )
         }
     }
 }
@@ -226,7 +235,7 @@ fun PlayerHand(cards: List<Card>) {
                 enter = fadeIn(animationSpec = tween(500, delayMillis = index * 200)) +
                         slideInHorizontally(initialOffsetX = { it / 4 })
             ) {
-                ImageCard(card.value, card.suit, card.imageUrl)
+                ImageCard(card.value, card.suit, card.image)
             }
         }
     }
