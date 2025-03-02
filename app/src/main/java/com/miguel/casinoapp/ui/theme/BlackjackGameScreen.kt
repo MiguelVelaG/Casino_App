@@ -2,9 +2,7 @@ package com.miguel.casinoapp.ui.theme
 
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
-import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -40,7 +38,6 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.miguel.casinoapp.R
 import com.miguel.casinoapp.R.drawable.ic_home
-import com.miguel.casinoapp.data.Card
 import com.miguel.casinoapp.viewmodel.BlackjackViewModel
 
 @Composable
@@ -204,7 +201,7 @@ fun ImageCard(value: String, suit: String, imageUrl: String?) {
         visible = isVisible,
         enter = fadeIn() + slideInVertically(initialOffsetY = { it / 2 })
     ) {
-        if (imageUrl != null && imageUrl.isNotEmpty()) {
+        if (!imageUrl.isNullOrEmpty()) {
             Image(
                 painter = rememberAsyncImagePainter(imageUrl),
                 contentDescription = "$value of $suit",
@@ -221,23 +218,23 @@ fun ImageCard(value: String, suit: String, imageUrl: String?) {
     }
 }
 
-@Composable
-fun PlayerHand(cards: List<Card>) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        cards.forEachIndexed { index, card ->
-            AnimatedVisibility(
-                visible = true,
-                enter = fadeIn(animationSpec = tween(500, delayMillis = index * 200)) +
-                        slideInHorizontally(initialOffsetX = { it / 4 })
-            ) {
-                ImageCard(card.value, card.suit, card.image)
-            }
-        }
-    }
-}
+//@Composable
+//fun PlayerHand(cards: List<Card>) {
+//    Row(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(8.dp),
+//        horizontalArrangement = Arrangement.Center
+//    ) {
+//        cards.forEachIndexed { index, card ->
+//            AnimatedVisibility(
+//                visible = true,
+//                enter = fadeIn(animationSpec = tween(500, delayMillis = index * 200)) +
+//                        slideInHorizontally(initialOffsetX = { it / 4 })
+//            ) {
+//                ImageCard(card.value, card.suit, card.image)
+//            }
+//        }
+//    }
+//}
 
