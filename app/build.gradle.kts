@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -46,15 +47,15 @@ android {
 
 
 dependencies {
-    // Retrofit para manejar la API
+    // Retrofit for API handling
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor.v4110)
 
-    // Coil para carga de imágenes en Compose
+    // Coil for image loading in Compose
     implementation(libs.coil)
 
-    // AndroidX y Jetpack Compose
+    // AndroidX and Jetpack Compose
     implementation(platform(libs.androidx.compose.bom.v20241201))
     implementation(libs.androidx.activity.compose)
     implementation(libs.material3)
@@ -70,6 +71,7 @@ dependencies {
     implementation(libs.androidx.foundation)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.monitor)
+    implementation(libs.firebase.auth.ktx)
 
     // Testing
     testImplementation(libs.junit.junit)
@@ -80,4 +82,10 @@ dependencies {
     // Debugging
     debugImplementation(libs.ui.test.manifest)
     debugImplementation(libs.ui.tooling)
+
+    // Firebase
+    // Import the Firebase BoM
+    implementation(platform(libs.firebase.bom))
+    //Add more firebase dependencies here
+    implementation(libs.firebase.analytics)
 }

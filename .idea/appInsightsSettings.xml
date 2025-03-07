@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.miguel.casinoapp" />
+                  <option name="mobileSdkAppId" value="1:104663349852:android:fdd769501011024968c499" />
+                  <option name="projectId" value="casino-app-71a29" />
+                  <option name="projectNumber" value="104663349852" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

@@ -6,9 +6,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.miguel.casinoapp.navigation.NavGraph
 import com.miguel.casinoapp.ui.theme.CasinoAppTheme
+import com.miguel.casinoapp.viewmodel.AuthViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -18,11 +20,17 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(tag, "onCreate: Actividad creada")
+
         setContent {
             CasinoAppTheme {
                 val navController = rememberNavController()
+
+                // Crear el ViewModel directamente
+                val authViewModel: AuthViewModel = viewModel()
+
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    NavGraph(navController = navController)
+                    // Pasar el authViewModel a la NavGraph
+                    NavGraph(navController = navController, authViewModel = authViewModel)
                 }
             }
         }

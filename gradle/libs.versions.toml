@@ -1,11 +1,12 @@
 [versions]
-agp = "8.8.2"
+agp = "8.9.0"
 animation = "1.7.8"
 coil = "2.2.2"  # O la versión que uses
 composeBomVersion = "2025.02.00"
 converterGson = "2.9.0"
 converterGsonVersion = "2.10.1"
 coreKtxVersion = "1.15.0"
+firebaseBom = "33.10.0"
 foundation = "1.7.8"
 kotlin = "2.1.0"
 coreKtx = "1.15.0"
@@ -24,6 +25,7 @@ retrofit = "2.9.0"
 roomKtx = "2.6.1"
 monitor = "1.7.2"
 junitKtx = "1.2.1"
+firebaseAuthKtx = "23.2.0"
 
 [libraries]
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
@@ -42,6 +44,8 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 #noinspection SimilarGradleDependency
 converter-gson-v2101 = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGsonVersion" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -71,6 +75,7 @@ junit-junit = { group = "junit", name = "junit", version.ref = "junitJunit" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 androidx-monitor = { group = "androidx.test", name = "monitor", version.ref = "monitor" }
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
+firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
