@@ -21,14 +21,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -36,19 +37,19 @@ import androidx.navigation.NavController
 import com.miguel.casinoapp.R
 import com.miguel.casinoapp.viewmodel.AuthViewModel
 
-@OptIn(ExperimentalMaterial3Api::class) // Añade esta anotación
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
-    var email = remember { mutableStateOf("") }
-    var password = remember { mutableStateOf("") }
-    val context = LocalContext.current
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(Color(0xFF000000), Color(0xFFB8860B)), // Gradiente negro a dorado (luxuoso)
+                    colors = listOf(Color(0xFF000000), Color(0xFFB8860B)),
                     startY = 0f,
                     endY = Float.POSITIVE_INFINITY
                 )
@@ -56,16 +57,14 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Texto "Casino App" encima de la imagen
         Text(
             text = "Casino App",
             style = MaterialTheme.typography.headlineLarge.copy(color = Color.Yellow),
-            modifier = Modifier.padding(bottom = 16.dp) // Espacio entre el texto y la imagen
+            modifier = Modifier.padding(bottom = 16.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Logo de la app
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo",
@@ -76,10 +75,9 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Campo de correo electrónico
         OutlinedTextField(
-            value = email.value,
-            onValueChange = { email.value = it },
+            value = email,
+            onValueChange = { email = it },
             label = { Text("Correo electrónico") },
             colors = TextFieldDefaults.colors(
                 focusedTextColor = Color.Black,
@@ -91,17 +89,14 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                 focusedLabelColor = Color(0xFF1EAB65),
                 unfocusedLabelColor = Color(0xFFB0B0B0),
             ),
-            modifier = Modifier
-                .fillMaxWidth(0.8f)
-                .padding(horizontal = 16.dp) // Agrega margen a los lados
+            modifier = Modifier.fillMaxWidth(0.8f).padding(horizontal = 16.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Campo de contraseña
         OutlinedTextField(
-            value = password.value,
-            onValueChange = { password.value = it },
+            value = password,
+            onValueChange = { password = it },
             label = { Text("Contraseña") },
             visualTransformation = PasswordVisualTransformation(),
             colors = TextFieldDefaults.colors(
@@ -114,26 +109,28 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                 focusedLabelColor = Color(0xFF1EAB65),
                 unfocusedLabelColor = Color(0xFFB0B0B0),
             ),
-            modifier = Modifier
-                .fillMaxWidth(0.8f)
-                .padding(horizontal = 16.dp)
+            modifier = Modifier.fillMaxWidth(0.8f).padding(horizontal = 16.dp)
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-        // Botón de inicio de sesión
+        errorMessage?.let {
+            Text(text = it, color = Color.Red, modifier = Modifier.padding(8.dp))
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Button(
             onClick = {
-                authViewModel.loginWithEmail(email.value, password.value) {
+                authViewModel.loginWithEmail(email, password) {
                     navController.navigate("mainMenu") {
-                        popUpTo("login") { inclusive = true } // Borra el login del historial
+                        popUpTo("login") { inclusive = true }
                     }
                 }
+                errorMessage = authViewModel.errorMessage
             },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E3A8A), contentColor = Color.White),
-            modifier = Modifier
-                .fillMaxWidth(0.8f)
-                .height(50.dp), // Botón grande y destacado
+            modifier = Modifier.fillMaxWidth(0.8f).height(50.dp),
             shape = CircleShape,
             contentPadding = PaddingValues(vertical = 12.dp),
         ) {
@@ -142,7 +139,6 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Botón de registro para nuevos usuarios
         TextButton(onClick = { navController.navigate("register") }) {
             Text("¿No tienes cuenta? Regístrate aquí", color = Color.White)
         }
