@@ -1,5 +1,6 @@
 package com.miguel.casinoapp.ui.theme
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -24,12 +26,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.miguel.casinoapp.R
 import com.miguel.casinoapp.viewmodel.AuthViewModel
 
 @Composable
@@ -50,12 +55,20 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
     ) {
         // Título de la pantalla
         Text(
-            text = "Registro",
+            text = "Registro Casino App",
             fontSize = 24.sp,
             color = Color.Yellow,
             style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier.padding(bottom = 16.dp)
         )
+        Image(
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Logo",
+            modifier = Modifier
+                .size(270.dp)
+                .clip(CircleShape)
+        )
+        Spacer(modifier = Modifier.height(24.dp))
 
         // Campo de correo electrónico
         OutlinedTextField(
@@ -111,14 +124,14 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel) {
                     }
                 }
             },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E3A8A), contentColor = Color.White),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow),
             modifier = Modifier
                 .fillMaxWidth(0.8f)
                 .height(50.dp),
             shape = CircleShape,
             contentPadding = PaddingValues(vertical = 12.dp),
         ) {
-            Text("Registrarse", color = Color.White)
+            Text("Registrarse", color = Color.Black)
         }
 
         Spacer(modifier = Modifier.height(16.dp))

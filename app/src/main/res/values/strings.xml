@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Casino+</string>
     <string name="roll">Lanzar dado</string>
+<!--    <string name="default_web_client_id">104663349852-vijnq16v7k36p4quopqaism8bmge56ti.apps.googleusercontent.com</string>-->
 </resources>

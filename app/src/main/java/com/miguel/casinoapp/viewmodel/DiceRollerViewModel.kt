@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 
 class DiceRollerViewModel : ViewModel() {
-    var coins = mutableIntStateOf(1000)
+    var coins = mutableIntStateOf(10000)
         private set
 
     var betAmount = mutableIntStateOf(0)

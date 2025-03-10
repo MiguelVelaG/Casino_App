@@ -2,9 +2,9 @@ package com.miguel.casinoapp.ui.theme
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,13 +12,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.miguel.casinoapp.R
 import com.miguel.casinoapp.viewmodel.AuthViewModel
@@ -49,9 +50,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(Color(0xFF000000), Color(0xFFB8860B)),
-                    startY = 0f,
-                    endY = Float.POSITIVE_INFINITY
+                    colors = listOf(Color.Black, Color(0xFFB8860B))
                 )
             ),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -63,8 +62,6 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo",
@@ -75,6 +72,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        // Campo de correo electrónico
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
@@ -89,11 +87,14 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                 focusedLabelColor = Color(0xFF1EAB65),
                 unfocusedLabelColor = Color(0xFFB0B0B0),
             ),
-            modifier = Modifier.fillMaxWidth(0.8f).padding(horizontal = 16.dp)
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
+                .padding(horizontal = 16.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Campo de contraseña
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
@@ -109,38 +110,63 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
                 focusedLabelColor = Color(0xFF1EAB65),
                 unfocusedLabelColor = Color(0xFFB0B0B0),
             ),
-            modifier = Modifier.fillMaxWidth(0.8f).padding(horizontal = 16.dp)
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
+                .padding(horizontal = 16.dp)
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        errorMessage?.let {
-            Text(text = it, color = Color.Red, modifier = Modifier.padding(8.dp))
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         Button(
             onClick = {
-                authViewModel.loginWithEmail(email, password) {
-                    navController.navigate("mainMenu") {
-                        popUpTo("login") { inclusive = true }
+                if (email.isBlank() || password.isBlank()) {
+                    errorMessage = "Los campos no pueden estar vacíos"
+                } else {
+                    authViewModel.loginWithEmail(email, password) {
+                        if (authViewModel.user != null) {
+                            navController.navigate("mainMenu") {
+                                popUpTo("login") { inclusive = true }
+                            }
+                        } else {
+                            errorMessage = "Usuario no registrado o contraseña incorrecta"
+                        }
                     }
                 }
-                errorMessage = authViewModel.errorMessage
             },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E3A8A), contentColor = Color.White),
-            modifier = Modifier.fillMaxWidth(0.8f).height(50.dp),
-            shape = CircleShape,
-            contentPadding = PaddingValues(vertical = 12.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow),
+            modifier = Modifier.fillMaxWidth(0.8f)
         ) {
-            Text("Iniciar Sesión", color = Color.White)
+            Text("Iniciar sesión", color = Color.Black)
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
-        TextButton(onClick = { navController.navigate("register") }) {
-            Text("¿No tienes cuenta? Regístrate aquí", color = Color.White)
-        }
+        Text(
+            text = "¿No tienes cuenta? Regístrate aquí",
+            color = Color.White,
+            fontSize = 14.sp,
+            modifier = Modifier.clickable {
+                navController.navigate("register")
+            }
+        )
+    }
+
+    // Muestra el cuadro de diálogo si hay un error
+    if (errorMessage != null) {
+        AlertDialog(
+            onDismissRequest = { errorMessage = null },
+            confirmButton = {
+                Button(
+                    onClick = { errorMessage = null },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow)
+                ) {
+                    Text("OK", color = Color.Black)
+                }
+            },
+            title = { Text("Error", color = Color.Black) },
+            text = { Text(errorMessage ?: "", color = Color.Black) },
+            containerColor = Color.White
+        )
     }
 }
+

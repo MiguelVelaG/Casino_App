@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 
 class RouletteViewModel : ViewModel() {
-    private val _coins = mutableIntStateOf(1000)
+    private val _coins = mutableIntStateOf(10000)
     val coins: State<Int> = _coins
 
     private val _betAmount = mutableIntStateOf(0)
@@ -60,7 +60,12 @@ class RouletteViewModel : ViewModel() {
     }
 
     // Método para hacer girar la ruleta
-    fun spinRoulette(coins: Int, betAmount: Int, selectedBet: String, mediaPlayer: MediaPlayer) {
+    fun spinRoulette(
+        coins: Int,
+        betAmount: Int,
+        selectedBet: String,
+        mediaPlayer: MediaPlayer
+    ) {
         if (betAmount in 1..coins) {
             mediaPlayer.start()
 

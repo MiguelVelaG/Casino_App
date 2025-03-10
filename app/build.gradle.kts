@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.gms.google-services")
+    id("com.google.gms.google-services") // Firebase
 }
 
 android {
@@ -45,17 +45,16 @@ android {
     }
 }
 
-
 dependencies {
-    // Retrofit for API handling
+    // Retrofit para manejar API
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor.v4110)
 
-    // Coil for image loading in Compose
+    // Coil para carga de imágenes en Compose
     implementation(libs.coil)
 
-    // AndroidX and Jetpack Compose
+    // AndroidX y Jetpack Compose
     implementation(platform(libs.androidx.compose.bom.v20241201))
     implementation(libs.androidx.activity.compose)
     implementation(libs.material3)
@@ -71,7 +70,20 @@ dependencies {
     implementation(libs.androidx.foundation)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.monitor)
-    implementation(libs.firebase.auth.ktx)
+
+    // Firebase (Asegurar última versión)
+    implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
+
+    // Google Sign-In con Credential Manager
+    implementation("androidx.credentials:credentials:1.2.0-alpha04")
+    implementation("androidx.credentials:credentials-play-services-auth:1.2.0-alpha04")
+
+    // Play Services Auth (Necesario para Google Sign-In)
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+    implementation("com.google.firebase:firebase-firestore-ktx:25.1.2")
 
     // Testing
     testImplementation(libs.junit.junit)
@@ -82,10 +94,6 @@ dependencies {
     // Debugging
     debugImplementation(libs.ui.test.manifest)
     debugImplementation(libs.ui.tooling)
-
-    // Firebase
-    // Import the Firebase BoM
-    implementation(platform(libs.firebase.bom))
-    //Add more firebase dependencies here
-    implementation(libs.firebase.analytics)
 }
+
+

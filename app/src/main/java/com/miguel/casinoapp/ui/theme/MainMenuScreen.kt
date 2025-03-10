@@ -1,156 +1,129 @@
 package com.miguel.casinoapp.ui.theme
 
-import android.util.Log
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ElevatedButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.google.firebase.firestore.FirebaseFirestore
 import com.miguel.casinoapp.R
+import com.miguel.casinoapp.viewmodel.AuthViewModel
 
 @Composable
-fun MainMenuScreen(navController: NavHostController) {
+fun MainMenuScreen(navController: NavHostController, authViewModel: AuthViewModel) {
+    val firestore = FirebaseFirestore.getInstance()
+    var userBalance by remember { mutableDoubleStateOf(10_000.0) } // Inicialmente 10,000 monedas
+
+    // Cargar saldo del usuario al iniciar la pantalla
+    LaunchedEffect(authViewModel.user?.uid) {
+        authViewModel.user?.uid?.let { userId ->
+            firestore.collection("users").document(userId)
+                .addSnapshotListener { document, error ->
+                    if (error == null && document != null) {
+                        userBalance = document.getDouble("balance") ?: 10000.0
+                    }
+                }
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(
                 brush = Brush.linearGradient(
-                    colors = listOf(
-                        Color(0xFF388E3C),
-                        Color(0xFFD32F2F)
-                    ), // Gradiente de verde a rojo
-                    start = androidx.compose.ui.geometry.Offset(0f, 0f),
-                    end = androidx.compose.ui.geometry.Offset(0f, Float.POSITIVE_INFINITY)
+                    colors = listOf(Color(0xFF388E3C), Color(0xFFD32F2F)) // Verde a Rojo
                 )
-            ) // Fondo con gradiente
+            )
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Título con sombra suave y ajustada
-            Text(
-                text = "Bienvenido al Casino",
-                fontSize = 36.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFFFFD700), // Color dorado brillante
+            // Nueva Sección: Imagen de perfil y saldo alineados arriba
+            Row(
                 modifier = Modifier
-                    .padding(bottom = 50.dp)
-                    .shadow(
-                        elevation = 4.dp, // Sombra más suave
-                        shape = RoundedCornerShape(8.dp),
-                        clip = false, // No recortar la sombra
-                        ambientColor = Color(0x55000000), // Sombra suave y sutil
-                        spotColor = Color(0x33000000) // Sombra más ligera en el punto
-                    )
-            )
+                    .fillMaxWidth()
+                    .padding(top = 50.dp, bottom = 40.dp), // 🔹 Aumentado el bottom padding para bajar los botones
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.profile_default),
+                    contentDescription = "Perfil de usuario",
+                    modifier = Modifier
+                        .size(60.dp)
+                        .clip(CircleShape)
+                        .clickable { navController.navigate("userProfile") }, // Ir a perfil
+                    contentScale = ContentScale.Crop
+                )
 
-            // Botón de "Juego de Dados"
-            CustomButton(
-                text = "Juego de Dados",
-                onClick = {
-                    Log.d(
-                        "MainMenuScreen",
-                        "Navegando al Dice..."
-                    ) // Log justo antes de la navegación
-                    navController.navigate("Dice")
-                },
-                iconRes = R.drawable.ic_dice, // Asegúrate de tener este icono
-                buttonColor = Color(0xFF388E3C), // Verde para el botón
-                iconColor = Color.White
-            )
+                Spacer(modifier = Modifier.width(20.dp))
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "💰 ${"%,d".format(userBalance.toInt())} monedas",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
 
-            // Botón de "Ruleta"
-            CustomButton(
-                text = "Ruleta",
-                onClick = {
-                    Log.d("MainMenuScreen", "Navegando a la ruleta...") // Log justo antes de la navegación
-                    navController.navigate("roulette")
-                },
-                iconRes = R.drawable.ic_roulette,
-                buttonColor = Color(0xFFD32F2F), // Rojo para el botón de ruleta
-                iconColor = Color.White
-            )
+            Spacer(modifier = Modifier.height(180.dp)) // 🔹 Espacio adicional para bajar más los botones
 
-            Spacer(modifier = Modifier.height(16.dp))
+            // Botones de navegación a los juegos
+            CustomButton("Juego de Dados", R.drawable.ic_dice, Color(0xFF388E3C)) {
+                navController.navigate("Dice") { popUpTo("mainMenu") { inclusive = false } }
+            }
 
-            // Botón de "Blackjack"
-            CustomButton(
-                text = "Blackjack",
-                onClick = {
-                    Log.d("MainMenuScreen", "Navegando al Blackjack...") // Log justo antes de la navegación
-                    navController.navigate("blackjack")
-                },
-                iconRes = R.drawable.ic_blackjack,
-                buttonColor = Color(0xFFFFA000), // Naranja dorado para blackjack
-                iconColor = Color.White
-            )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp)) // 🔹 Aumenté la separación entre botones
 
-            // Botón para ir a la descripción de la app
-            CustomButton(
-                text = "Descripción de la App",
-                onClick = {
-                    Log.d("MainMenuScreen", "Navegando a la descripción de la app...")
-                    navController.navigate("description")
-                },
-                iconRes = R.drawable.info, // Puedes usar el icono adecuado aquí
-                buttonColor = Color(0xFF3F51B5), // Azul para el botón de descripción
-                iconColor = Color.White
-            )
+            CustomButton("Ruleta", R.drawable.ic_roulette, Color(0xFFD32F2F)) {
+                navController.navigate("roulette") { popUpTo("mainMenu") { inclusive = false } }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            CustomButton("Blackjack", R.drawable.ic_blackjack, Color(0xFFFFA000)) {
+                navController.navigate("blackjack") { popUpTo("mainMenu") { inclusive = false } }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            CustomButton("Descripción de la App", R.drawable.info, Color(0xFF3F51B5)) {
+                navController.navigate("description") { popUpTo("mainMenu") { inclusive = false } }
+            }
         }
     }
 }
+
+// Componente de Botón Reutilizable
 @Composable
-fun CustomButton(
-    text: String,
-    onClick: () -> Unit,
-    iconRes: Int,
-    buttonColor: Color,
-    iconColor: Color
-) {
+fun CustomButton(text: String, iconRes: Int, buttonColor: Color, onClick: () -> Unit) {
     ElevatedButton(
         onClick = onClick,
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(0.8f)
             .height(64.dp)
-            .padding(horizontal = 32.dp)
-            .animateContentSize(), // Animación para el cambio de tamaño
-        shape = RoundedCornerShape(24.dp), // Bordes redondeados
-        colors = ButtonDefaults.buttonColors(
-            containerColor = buttonColor,
-            contentColor = Color.White
-        ),
-        elevation = ButtonDefaults.elevatedButtonElevation(2.dp), // Sombra mínima para profesionalismo
+            .animateContentSize(),
+        shape = RoundedCornerShape(24.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = buttonColor, contentColor = Color.White),
+        elevation = ButtonDefaults.elevatedButtonElevation(2.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -160,21 +133,11 @@ fun CustomButton(
             Icon(
                 painter = painterResource(id = iconRes),
                 contentDescription = null,
-                modifier = Modifier
-                    .size(32.dp) // Tamaño del icono
-                    .animateContentSize(), // Animación de cambio de tamaño
-                tint = iconColor // Cambia el color del icono
+                modifier = Modifier.size(32.dp),
+                tint = Color.White
             )
             Spacer(modifier = Modifier.width(12.dp))
-            Text(
-                text = text,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                style = androidx.compose.ui.text.TextStyle(
-                    letterSpacing = 1.5.sp // Agregar un poco de espaciado entre letras para un toque más elegante
-                )
-            )
+            Text(text, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
