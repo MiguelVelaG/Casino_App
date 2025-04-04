@@ -114,7 +114,7 @@ Si deseas contribuir:
 
 
 ## 📄 Licencia
-Este proyecto está bajo la licencia MIT.
+“Este código es propiedad de Miguel Velasco. Su uso esta permitido, pero no se permite su distribución ni modificación sin autorización expresa del autor.”
 
 ## 👤 Autor
 - **Miguel Velasco** - [GitHub](https://github.com/MiguelVelaG)
