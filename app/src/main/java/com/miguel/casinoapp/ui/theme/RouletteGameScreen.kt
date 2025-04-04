@@ -499,7 +499,6 @@ fun getColorForNumber(number: Int): Color {
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewRouletteGameScreen() {
